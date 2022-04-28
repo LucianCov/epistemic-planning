@@ -1,0 +1,6 @@
+<launch>
+  <node name="agent_1" pkg="epistemic_sim" type="marker.py" />
+  <node name="agent_2" pkg="epistemic_sim" type="marker.py" />
+  <node name="coordinator" pkg="epistemic_sim" type="coordinator.py" />
+  <node name="rviz" pkg="rviz" type="rviz" />
+</launch>
