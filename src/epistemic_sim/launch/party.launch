@@ -2,5 +2,6 @@
   <node name="agent_1" pkg="epistemic_sim" type="marker.py" />
   <node name="agent_2" pkg="epistemic_sim" type="marker.py" />
   <node name="coordinator" pkg="epistemic_sim" type="coordinator.py" />
+  <node name="map_server" pkg="map_server" type="map_server" args="/home/rlredmond/epistemic-planning/src/epistemic_sim/utils/rviz_map.yaml" />
   <node name="rviz" pkg="rviz" type="rviz" />
 </launch>

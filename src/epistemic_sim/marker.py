@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import rospy
+from std_msgs.msg import ColorRGBA
 from visualization_msgs.msg import Marker
 from geometry_msgs.msg import Pose
 
@@ -12,7 +13,8 @@ class marker_rebroadcaster():
         rospy.init_node("marker")
 
         self.pub = rospy.Publisher(rospy.get_name()+"/marker", Marker, queue_size = 2)
-        self.sub = rospy.Subscriber(rospy.get_name()+"/pose", Pose, self.callback)
+        self.pose_sub = rospy.Subscriber(rospy.get_name()+"/pose", Pose, self.pose_callback)
+        self.color_sub = rospy.Subscriber(rospy.get_name()+"/color", ColorRGBA, self.color_callback)
 
         self.marker = Marker()
 
@@ -24,9 +26,9 @@ class marker_rebroadcaster():
         self.marker.id = 0
 
         # Set the scale of the marker
-        self.marker.scale.x = 1.0
-        self.marker.scale.y = 1.0
-        self.marker.scale.z = 1.0
+        self.marker.scale.x = 0.2
+        self.marker.scale.y = 0.2
+        self.marker.scale.z = 0.2
 
         # Set the color
         self.marker.color.r = 0.0
@@ -42,11 +44,9 @@ class marker_rebroadcaster():
         self.marker.pose.orientation.z = 0
         self.marker.pose.orientation.w = 0
         
-        while not rospy.is_shutdown():
-            self.pub.publish(self.marker)
-            rospy.rostime.wallsleep(1.0)
+        rospy.spin()
     
-    def callback(self, pose):
+    def pose_callback(self, pose):
 
 
         # Set the pose of the marker
@@ -57,5 +57,16 @@ class marker_rebroadcaster():
         self.marker.pose.orientation.y = pose.orientation.y
         self.marker.pose.orientation.z = pose.orientation.z
         self.marker.pose.orientation.w = pose.orientation.w
+        
+        self.pub.publish(self.marker)
+
+    def color_callback(self, color):
+        self.marker.color.r = color.r
+        self.marker.color.g = color.g
+        self.marker.color.b = color.b
+        self.marker.color.a = color.a
+
+        self.pub.publish(self.marker)
+
 
 marker_rebroadcaster()
